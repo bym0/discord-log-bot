@@ -1,4 +1,5 @@
 import os
+import asyncio
 import discord
 
 DISCORD_TOKEN = os.environ.get('LOGBOT_TOKEN')
@@ -24,5 +25,14 @@ async def on_voice_state_update(member, before, after):
         if after.channel is not None:
             log_channel = client.get_channel(DISCORD_CHANNEL) # replace with your own text channel ID
             await log_channel.send(f'{member.name} has joined voice channel {after.channel.name}.')
+            
 
-client.run(DISCORD_TOKEN)
+async def main():
+    await client.start(DISCORD_TOKEN)
+
+try:
+    asyncio.run(main())
+except KeyboardInterrupt:
+    print('Keyboard interrupt detected. Stopping...')
+finally:
+    asyncio.run(client.close())
