@@ -1,13 +1,13 @@
-import discord
 import os
+import discord
 
 intents = discord.Intents.default()
 intents.voice_states = True
 
 client = discord.Client(intents=intents)
 
-DISCORD_TOKEN = os.environ['LOGBOT_TOKEN']
-DISCORD_CHANNEL = int(os.environ['LOGBOT_CHANNEL'])
+DISCORD_TOKEN = os.environ.get('LOGBOT_TOKEN')
+DISCORD_CHANNEL = int(os.environ.get('LOGBOT_CHANNEL'))
 
 @client.event
 async def on_ready():
