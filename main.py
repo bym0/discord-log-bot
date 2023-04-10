@@ -12,6 +12,7 @@ DISCORD_CHANNEL = os.environ['LOGBOT_CHANNEL']
 @client.event
 async def on_ready():
     print('Logged in as {0.user}'.format(client))
+    print(f'Using following Token: {LOGBOT_TOKEN} \nUsing following Channel: {LOGBOT_CHANNEL}')
 
 @client.event
 async def on_voice_state_update(member, before, after):
