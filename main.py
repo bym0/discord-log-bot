@@ -6,8 +6,8 @@ intents.voice_states = True
 
 client = discord.Client(intents=intents)
 
-DISCORD_TOKEN = os.environ.get('LOGBOT_TOKEN')
-DISCORD_CHANNEL = os.environ.get('LOGBOT_CHANNEL')
+DISCORD_TOKEN = os.environ['LOGBOT_TOKEN']
+DISCORD_CHANNEL = os.environ['LOGBOT_CHANNEL']
 
 @client.event
 async def on_ready():
