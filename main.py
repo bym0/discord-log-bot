@@ -18,9 +18,9 @@ async def on_voice_state_update(member, before, after):
     if before.channel != after.channel:
         if before.channel is not None:
             log_channel = client.get_channel(DISCORD_CHANNEL) # replace with your own text channel ID
-            await log_channel.send(f'{member.name} has left voice channel {before.channel.name}.')
+            await log_channel.send(f'{member.mention} has left voice channel <#{before.channel.id}>.')
         if after.channel is not None:
             log_channel = client.get_channel(DISCORD_CHANNEL) # replace with your own text channel ID
-            await log_channel.send(f'{member.name} has joined voice channel {after.channel.name}.')
+            await log_channel.send(f'{member.mention} has joined voice channel <#{after.channel.id}>.')
 
 client.run(DISCORD_TOKEN)
