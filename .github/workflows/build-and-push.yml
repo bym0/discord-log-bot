@@ -29,7 +29,7 @@ jobs:
         name: Build and push Python
         uses: docker/build-push-action@v4
         with:
-          context: python
+          context: "{{defaultContext}}:python"
           push: true
           tags: ghcr.io/bym0/discord-log-bot:latest-python
           platforms: linux/amd64,linux/arm64
@@ -38,7 +38,7 @@ jobs:
         name: Build and push Golang
         uses: docker/build-push-action@v4
         with:
-          context: go
+          context: "{{defaultContext}}:go"
           push: true
           tags: ghcr.io/bym0/discord-log-bot:latest-go
           platforms: linux/amd64,linux/arm64
