@@ -8,7 +8,7 @@ docker run \
   --name='discord-log-bot' \
   -e 'LOGBOT_TOKEN'='### \
   -e 'LOGBOT_CHANNEL'='###' \
-  ghcr.io/bym0/discord-log-bot:latest
+  ghcr.io/bym0/discord-log-bot:latest-go
 ```
 
 ## Variables

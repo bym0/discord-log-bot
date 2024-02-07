@@ -26,9 +26,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
       -
-        name: Build and push
+        name: Build and push Python
         uses: docker/build-push-action@v4
         with:
+          context: ./python
           push: true
-          tags: ghcr.io/bym0/discord-log-bot:latest
+          tags: ghcr.io/bym0/discord-log-bot:latest-python
+          platforms: linux/amd64,linux/arm64
+
+      -
+        name: Build and push Golang
+        uses: docker/build-push-action@v4
+        with:
+          context: ./go
+          push: true
+          tags: ghcr.io/bym0/discord-log-bot:latest-go
           platforms: linux/amd64,linux/arm64
