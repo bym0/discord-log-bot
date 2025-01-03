@@ -27,7 +27,15 @@ func main() {
 		return
 	}
 
+	// Add event handlers
 	dg.AddHandler(voiceStateUpdate)
+	dg.AddHandlerOnce(func(s *discordgo.Session, ready *discordgo.Ready) {
+		// Send a message to the log channel when the bot is ready
+		_, err := s.ChannelMessageSend(logChannel, "Bot is up and running!")
+		if err != nil {
+			fmt.Println("Error! Sending startup message:", err)
+		}
+	})
 
 	err = dg.Open()
 	if err != nil {
@@ -44,20 +52,33 @@ func main() {
 	dg.Close()
 }
 
-func voiceStateUpdate(s *discordgo.Session, m *discordgo.VoiceStateUpdate) {
+func voiceStateUpdate(s *discordgo.Session, vsu *discordgo.VoiceStateUpdate) {
 	logChannel := os.Getenv("LOGBOT_CHANNEL")
 	if logChannel == "" {
 		fmt.Println("Error! LOGBOT_CHANNEL is missing.")
 		return
 	}
 
-	userName := m.Member.Mention()
-	currentChannelID := m.ChannelID
-	beforeUpdate := m.BeforeUpdate
+	userMention := "<@" + vsu.UserID + ">"
 
-	if beforeUpdate == nil {
-		_, _ = s.ChannelMessageSend(logChannel, userName+" has joined channel <#"+currentChannelID+">.")
-	} else {
-		_, _ = s.ChannelMessageSend(logChannel, userName+" has left channel <#"+beforeUpdate.ChannelID+">.")
+	// Check for join (nil or empty BeforeUpdate.ChannelID -> valid ChannelID)
+	if vsu.BeforeUpdate == nil || vsu.BeforeUpdate.ChannelID == "" {
+		if vsu.ChannelID != "" {
+			_, err := s.ChannelMessageSend(logChannel, fmt.Sprintf("%s has joined channel <#%s>.", userMention, vsu.ChannelID))
+			if err != nil {
+				fmt.Println("Error! Sending join message:", err)
+			}
+		}
+		return
+	}
+
+	// Check for leave (valid BeforeUpdate.ChannelID -> nil or empty ChannelID)
+	if vsu.ChannelID == "" {
+		if vsu.BeforeUpdate.ChannelID != "" {
+			_, err := s.ChannelMessageSend(logChannel, fmt.Sprintf("%s has left channel <#%s>.", userMention, vsu.BeforeUpdate.ChannelID))
+			if err != nil {
+				fmt.Println("Error! Sending leave message:", err)
+			}
+		}
 	}
 }
